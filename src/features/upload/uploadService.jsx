@@ -1,9 +1,33 @@
+// import axios from 'axios';
+// import { base_url } from '../../utils/base_url';
+
+// const uploadImg = async (data) => {
+//   const response = await axios.post(`${base_url}/upload/`, data );
+//   return response.data;
+// };
+
+// const deleteImg = async (id) => { 
+//   const response = await axios.delete(`${base_url}/upload/delete-img/${id}`);
+//   return response.data;
+// };
+
+// const uploadService = { uploadImg, deleteImg };
+
+// export default uploadService;
+
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
 
 const uploadImg = async (data) => {
-  const response = await axios.post(`${base_url}/upload/`, data );
-  return response.data;
+  try {
+    const response = await axios.post(`${base_url}/upload/`, data);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 413) {
+      throw new Error("Image is too large. Please upload a smaller image (max 5MB).");
+    }
+    throw error;
+  }
 };
 
 const deleteImg = async (id) => { 
